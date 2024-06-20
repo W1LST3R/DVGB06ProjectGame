@@ -11,6 +11,7 @@ public class PlayerCharacter : MonoBehaviour
     public Animator animator;
     public int jumpCounter = 0;
     public bool hasJumped;
+    public bool goingLeft = false;
     private void Start()
     {
         transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
@@ -26,6 +27,16 @@ public class PlayerCharacter : MonoBehaviour
     private void movePlayer()
     {
         move = Input.GetAxis("Horizontal");
+        if (move < 0 && goingLeft != true)
+        {
+            goingLeft = true;
+            transform.localScale = new Vector3(transform.localScale.x*-1, transform.localScale.y, transform.localScale.z);
+        }
+        else if (move > 0 && goingLeft == true)
+        {
+            goingLeft=false;
+            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+        }
 
         rigidbody2D.velocity = new Vector2(move * speed, rigidbody2D.velocity.y);
         if (Input.GetButtonDown("Jump") && jumpCounter < 2)
