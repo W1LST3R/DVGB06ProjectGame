@@ -11,11 +11,16 @@ public class PlayerCharacter : MonoBehaviour
     public Animator animator;
     public int jumpCounter = 0;
     public bool hasJumped;
+    private void Start()
+    {
+        transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+    }
 
     // Update is called once per frame
     void Update()
     {
         movePlayer();
+        checkIfBellowStage();
     }
 
     private void movePlayer()
@@ -31,6 +36,14 @@ public class PlayerCharacter : MonoBehaviour
         animator.SetFloat("Horizontal", rigidbody2D.velocity.x);
         animator.SetFloat("Vertical", rigidbody2D.velocity.y);
         animator.SetFloat("Speed", rigidbody2D.velocity.sqrMagnitude);
+    }
+
+    private void checkIfBellowStage()
+    {
+        if (transform.position.y < -5.56)
+        {
+            transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        }
     }
 
 
