@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] bool nextLevel;
+    [SerializeField] string levelName;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (nextLevel)
+            {
+                SceneController.instance.nextLevel();
+            }
+            else
+            {
+                SceneController.instance.loadScene(levelName);
+            }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player")) SceneManager.LoadScene("World_1.2");
+        }
     }
 }

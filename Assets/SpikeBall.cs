@@ -21,19 +21,16 @@ public class SpikeBall : MonoBehaviour
             startSwing();
         }
     }
-
-    public void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             GameObject.FindGameObjectWithTag("Player").transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
             startSwing();
-        }else if (collision.gameObject.CompareTag("SpikeBall"))
-        {
-            startSwing();
         }
         
     }
+    
     private void startSwing()
     {
         rb.velocity = Vector2.one * 15;

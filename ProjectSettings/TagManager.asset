@@ -8,6 +8,8 @@ TagManager:
   - EnemyAP
   - Start
   - SpikeBall
+  - HeadAP
+  - Head
   layers:
   - Default
   - TransparentFX

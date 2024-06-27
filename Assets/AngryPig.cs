@@ -1,24 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AngryPig : MonoBehaviour
 {
     public float speed = -2;
-    public float x;
-    public int distance;
     public bool left = true;
     public bool playerInsight = false;
     public float slow = 20;
     public bool timeIsRunning = false;
     public bool angerTimerIsRunning = false;
     public bool angry = false;
-    public int angryPhase = 10;
+    public float angryPhase = 10;
     public float time = 0;
     public float getAngryTime = 0;
-    public Rigidbody2D rigidbody2D;
-    public Rigidbody2D playerBody;
+    public Rigidbody2D enemyBody;
+    private Rigidbody2D playerBody;
+    public Animator animator;
+    public float movementDirection;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,16 +30,18 @@ public class AngryPig : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (angerTimerIsRunning)
+        if (angerTimerIsRunning )
         {
             if (Mathf.FloorToInt(time % 60) < getAngryTime)
             {
                 time += Time.deltaTime;
             }
-            else
+            else if (speed != 0)
             {
                 angerTimerIsRunning = false;
+                speed = 4;
                 time = 0;
+                angry = true;
             }
         }
 
@@ -48,33 +53,53 @@ public class AngryPig : MonoBehaviour
             }
             else
             {
-                timeIsRunning = false ;
-                speed = 0;
+                playerLeftZone();
             }
         }
-    }
 
-    private void FixedUpdate()
-    {
         if (playerInsight)
         {
             float playerPosition = playerBody.position.x;
-            float movementDirection = (playerPosition - rigidbody2D.position.x) / slow;
+            float enemyPosition = enemyBody.position.x;
+            movementDirection = (playerPosition - enemyPosition) / slow;
             Debug.Log(movementDirection);
             if (movementDirection < 0 && !left)
             {
                 left = true;
                 transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             }
-            else if(movementDirection > 0 && left)
+            else if (movementDirection > 0 && left)
             {
                 left = false;
                 transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             }
-            rigidbody2D.MovePosition(new Vector2((rigidbody2D.position.x + movementDirection)*speed , rigidbody2D.position.y));
+            movementDirection *= speed;
+            Debug.Log(movementDirection);
+
+            enemyBody.MovePosition(new Vector2(enemyPosition + movementDirection, enemyBody.position.y));
+            
         }
-   
+        animator.SetFloat("Horizontal", movementDirection);
+        animator.SetFloat("Speed", speed);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Mathf.Round(playerBody.position.y) == Mathf.Round(enemyBody.position.y))
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                playerLeftZone();
+                GameObject.FindGameObjectWithTag("Player").transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+            }
+               
+        }
+    }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -84,6 +109,7 @@ public class AngryPig : MonoBehaviour
                 playerInsight = true;
                 speed = 2;
                 time = 0;
+                playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
             }
         }
     }
@@ -91,9 +117,9 @@ public class AngryPig : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (playerInsight)
+            if (playerInsight && !angry)
             {
-                speed *= 3;
+                angerTimerIsRunning = true;
             }
         }  
     }
@@ -101,13 +127,17 @@ public class AngryPig : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerInsight = false;
             timeIsRunning = true;
         }     
     }
 
     private void playerLeftZone()
     {
-        
+        angry = false;
+        playerInsight = false;
+        timeIsRunning = false;
+        speed = 0;
+        playerBody = null;
+        movementDirection = 0;
     }
 }

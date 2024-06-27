@@ -66,6 +66,7 @@ public class PlayerCharacter : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         jumpCounterReset();
+        if (collision.gameObject.CompareTag("Head")) Destroy(collision.gameObject);
     }
 }
 
