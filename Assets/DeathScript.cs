@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class DeathScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //[SerializeField] GameObject enemy;
+    public static bool isDead = false;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            Debug.Log("I death");
+            isDead = true;
         }
     }
 }

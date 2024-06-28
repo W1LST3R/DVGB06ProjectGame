@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public float speed = 1;
-    public float jumpPower = 2;
-    public Rigidbody2D rigidbody2D;
-    public float move;
+    public static PlayerCharacter player;
+    public float speed;
+    public float jumpPower;
+    public float downWardDrag;
+    public Rigidbody2D playerBody;
+    private float move;
     public Animator animator;
-    public int jumpCounter = 0;
-    public bool hasJumped;
-    public bool goingLeft = false;
+    private int jumpCounter;
+    private bool hasLeftWall;
+    private bool goingLeft;
+    private bool playerCanMove;
     private void Start()
     {
         transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        playerCanMove = true;
+        goingLeft = false;
+        jumpCounter = 0;
+        hasLeftWall = true;
+    }
+
+    private void Awake()
+    {
+        if (player == null)
+        {
+            player = this;
+        }
     }
 
     // Update is called once per frame
@@ -26,27 +41,39 @@ public class PlayerCharacter : MonoBehaviour
 
     private void movePlayer()
     {
-        move = Input.GetAxis("Horizontal");
-        if (move < 0 && goingLeft != true)
+        if (playerCanMove)
         {
-            goingLeft = true;
-            transform.localScale = new Vector3(transform.localScale.x*-1, transform.localScale.y, transform.localScale.z);
-        }
-        else if (move > 0 && goingLeft == true)
-        {
-            goingLeft=false;
-            transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
-        }
+            move = Input.GetAxis("Horizontal");
+            if (move < 0 && goingLeft != true)
+            {
+                goingLeft = true;
+                transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            }
+            else if (move > 0 && goingLeft == true)
+            {
+                goingLeft = false;
+                transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            }
 
-        rigidbody2D.velocity = new Vector2(move * speed, rigidbody2D.velocity.y);
-        if (Input.GetButtonDown("Jump") && jumpCounter < 2)
-        {
-            rigidbody2D.AddForce(new Vector2(rigidbody2D.velocity.x,jumpPower));
-            jumpCounter++;
+            playerBody.velocity = new Vector2(move * speed, playerBody.velocity.y);
+            if (Input.GetButtonDown("Jump") && jumpCounter < 2)
+            {
+                playerBody.AddForce(new Vector2(playerBody.velocity.x, jumpPower));
+                jumpCounter++;
+            }
+            if (jumpCounter == 2)
+            {
+                animator.SetBool("IsDubbelJumping", true);
+            }
+            else
+            {
+                animator.SetBool("IsDubbelJumping", false);
+
+            }
         }
-        animator.SetFloat("Horizontal", rigidbody2D.velocity.x);
-        animator.SetFloat("Vertical", rigidbody2D.velocity.y);
-        animator.SetFloat("Speed", rigidbody2D.velocity.sqrMagnitude);
+        animator.SetFloat("Horizontal", playerBody.velocity.x);
+        animator.SetFloat("Vertical", playerBody.velocity.y);
+        animator.SetFloat("Speed", playerBody.velocity.sqrMagnitude);
     }
 
     private void checkIfBellowStage()
@@ -62,11 +89,43 @@ public class PlayerCharacter : MonoBehaviour
     {
         jumpCounter = 0;
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        jumpCounterReset();
-        if (collision.gameObject.CompareTag("Head")) Destroy(collision.gameObject);
+        if (!collision.gameObject.CompareTag("Wall"))
+        {
+            jumpCounterReset();
+        }
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            playerCanMove = false;
+            player = null;
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (WallScript.touchingWall)
+        {
+            animator.SetBool("IsTouchingWall", WallScript.touchingWall);
+            if (hasLeftWall)
+            {
+                jumpCounterReset();
+                hasLeftWall = false;    
+            }
+            playerBody.velocity = new Vector2(playerBody.velocity.x, downWardDrag);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (!WallScript.touchingWall)
+        {
+            hasLeftWall = true;
+            animator.SetBool("IsTouchingWall", WallScript.touchingWall);
+        }
+    }
+
+    public void playerDied()
+    {
+        playerBody.transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
     }
 }
 

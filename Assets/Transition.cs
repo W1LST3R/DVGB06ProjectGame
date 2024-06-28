@@ -24,7 +24,6 @@ public class Transition : MonoBehaviour
     {
         if (timeIsCounting)
         {
-            Debug.Log("I bool");
             remainingTime -= Time.deltaTime;
             int minutes = Mathf.FloorToInt(remainingTime / 60);
             int seconds = Mathf.FloorToInt(remainingTime % 60);

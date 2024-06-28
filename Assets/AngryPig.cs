@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,7 +8,7 @@ public class AngryPig : MonoBehaviour
 {
     public float speed = -2;
     public bool left = true;
-    public bool playerInsight = false;
+    public bool inSight = false;
     public float slow = 20;
     public bool timeIsRunning = false;
     public bool angerTimerIsRunning = false;
@@ -57,12 +56,11 @@ public class AngryPig : MonoBehaviour
             }
         }
 
-        if (playerInsight)
+        if (inSight)
         {
             float playerPosition = playerBody.position.x;
             float enemyPosition = enemyBody.position.x;
             movementDirection = (playerPosition - enemyPosition) / slow;
-            Debug.Log(movementDirection);
             if (movementDirection < 0 && !left)
             {
                 left = true;
@@ -74,7 +72,6 @@ public class AngryPig : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             }
             movementDirection *= speed;
-            Debug.Log(movementDirection);
 
             enemyBody.MovePosition(new Vector2(enemyPosition + movementDirection, enemyBody.position.y));
             
@@ -87,16 +84,21 @@ public class AngryPig : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (Mathf.Round(playerBody.position.y) == Mathf.Round(enemyBody.position.y))
+            if (DeathScript.isDead)
             {
                 Destroy(gameObject);
+                DeathScript.isDead = false;
+                Debug.Log("död");
+
             }
-            else
+            else if (!DeathScript.isDead)
             {
+                Debug.Log("inte död");
+
                 playerLeftZone();
-                GameObject.FindGameObjectWithTag("Player").transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+                PlayerCharacter.player.playerDied();
             }
-               
+
         }
     }
     
@@ -104,12 +106,9 @@ public class AngryPig : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (!playerInsight)
+            if (!inSight)
             {
-                playerInsight = true;
-                speed = 2;
-                time = 0;
-                playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+                playerInSight();
             }
         }
     }
@@ -117,9 +116,12 @@ public class AngryPig : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (playerInsight && !angry)
+            if (inSight && !angry)
             {
                 angerTimerIsRunning = true;
+            }else if (!inSight)
+            {
+                playerInSight();
             }
         }  
     }
@@ -131,10 +133,17 @@ public class AngryPig : MonoBehaviour
         }     
     }
 
+    private void playerInSight()
+    {
+        inSight = true;
+        speed = 2;
+        time = 0;
+        playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+    }
     private void playerLeftZone()
     {
         angry = false;
-        playerInsight = false;
+        inSight = false;
         timeIsRunning = false;
         speed = 0;
         playerBody = null;

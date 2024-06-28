@@ -5,32 +5,21 @@ using UnityEngine;
 
 public class SpikeBall : MonoBehaviour
 {
-    // Start is called before the first frame update
     public Rigidbody2D rb;
-    public bool start = false;
     void Start()
     {
        startSwing();
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (start)
-        {
-            startSwing();
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+        //If the player hits the spike ball, then it dies and the spikeball is rested
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameObject.FindGameObjectWithTag("Player").transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+            PlayerCharacter.player.playerDied();
             startSwing();
         }
-        
-    }
-    
+    }    
+    //Makes the object start swinging (not the best code for it but i works for the moment)
     private void startSwing()
     {
         rb.velocity = Vector2.one * 15;

@@ -5,13 +5,13 @@ using UnityEngine;
 public class PauseMenue : MonoBehaviour
 {
     public GameObject pauseMenu;
-    // Start is called before the first frame update
+    // Makes the cursor invisible
     void Start()
     {
         Cursor.visible = false;
     }
 
-    // Update is called once per frame
+    //If the esc key is enterd the time stops and the pause menu is shown
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
@@ -32,11 +32,13 @@ public class PauseMenue : MonoBehaviour
         }
     }
 
+    //Quits the game
     public void quit()
     {
         Application.Quit();
     }
 
+    //Resumes the game
     public void resume()
     {
         Time.timeScale = 1f;

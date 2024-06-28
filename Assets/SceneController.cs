@@ -9,7 +9,7 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     [SerializeField]Animator animator;
-    
+    //
     private void Awake()
     {
         if(instance == null)
@@ -50,7 +50,7 @@ public class SceneController : MonoBehaviour
     }
     public void startScene(String sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
         animator.SetTrigger("Start");
+        SceneManager.LoadSceneAsync(sceneName);
     }
 }

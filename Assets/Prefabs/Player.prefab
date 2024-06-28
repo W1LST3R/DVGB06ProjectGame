@@ -148,12 +148,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   jumpPower: 350
-  rigidbody2D: {fileID: 8408319040771835213}
-  move: 0
+  downWardDrag: -1
+  playerBody: {fileID: 8408319040771835213}
   animator: {fileID: 6125511684531452423}
-  jumpCounter: 0
-  hasJumped: 0
-  goingLeft: 0
 --- !u!95 &6125511684531452423
 Animator:
   serializedVersion: 5
