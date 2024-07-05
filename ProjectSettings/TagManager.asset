@@ -11,6 +11,8 @@ TagManager:
   - HeadAP
   - Head
   - Wall
+  - Score
+  - Audio
   layers:
   - Default
   - TransparentFX

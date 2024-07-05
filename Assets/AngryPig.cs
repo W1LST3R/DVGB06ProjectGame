@@ -20,21 +20,25 @@ public class AngryPig : MonoBehaviour
     private Rigidbody2D playerBody;
     public Animator animator;
     public float movementDirection;
+    AudioManager audioManager;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //if the player is in the enemys radius the timmer will start
         if (angerTimerIsRunning )
         {
+            //counts up the time
             if (Mathf.FloorToInt(time % 60) < getAngryTime)
             {
                 time += Time.deltaTime;
             }
+            //Increases the speed of the enemy
             else if (speed != 0)
             {
                 angerTimerIsRunning = false;
@@ -43,9 +47,10 @@ public class AngryPig : MonoBehaviour
                 angry = true;
             }
         }
-
+        //if the player is outside of the enemys radius
         if (timeIsRunning)
         {
+            //when the time is equal to the tresh hold the enemy will lose agro of the player
             if(Mathf.FloorToInt(time % 60) < angryPhase)
             {
                 time += Time.deltaTime;
@@ -56,11 +61,15 @@ public class AngryPig : MonoBehaviour
             }
         }
 
+        //if the player is in the radius of the enemy it will move towards the enemys location
         if (inSight)
         {
             float playerPosition = playerBody.position.x;
             float enemyPosition = enemyBody.position.x;
+            //gets the distans between the player and enemy and devides it so the enemy dont teleport.
+            //Note could improve this so the enemy move more smooth
             movementDirection = (playerPosition - enemyPosition) / slow;
+            //flips the enemy dependent on wich way it is going
             if (movementDirection < 0 && !left)
             {
                 left = true;
@@ -72,29 +81,31 @@ public class AngryPig : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             }
             movementDirection *= speed;
-
+            //Moves the enemy
             enemyBody.MovePosition(new Vector2(enemyPosition + movementDirection, enemyBody.position.y));
             
         }
+        //Sets the animation for the enemy
         animator.SetFloat("Horizontal", movementDirection);
         animator.SetFloat("Speed", speed);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //if the player collides with the enemy
         if (collision.gameObject.CompareTag("Player"))
         {
+            //if the player hits the head
             if (DeathScript.isDead)
             {
+                audioManager.playSFX(audioManager.enemyDeath);
                 Destroy(gameObject);
+                gameObject.SetActive(false);
                 DeathScript.isDead = false;
-                Debug.Log("död");
-
             }
+            //if the player hits any other part
             else if (!DeathScript.isDead)
             {
-                Debug.Log("inte död");
-
                 playerLeftZone();
                 PlayerCharacter.player.playerDied();
             }
@@ -104,6 +115,7 @@ public class AngryPig : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if the player enters the enemys radius
         if (collision.gameObject.CompareTag("Player"))
         {
             if (!inSight)
@@ -114,6 +126,7 @@ public class AngryPig : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        //if the player stays in the enemys radius
         if (collision.gameObject.CompareTag("Player"))
         {
             if (inSight && !angry)
@@ -127,12 +140,14 @@ public class AngryPig : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        //if the player exits the enemys radius
         if (collision.gameObject.CompareTag("Player"))
         {
             timeIsRunning = true;
         }     
     }
 
+    //sets necessary variabels for the enemy
     private void playerInSight()
     {
         inSight = true;
@@ -140,6 +155,8 @@ public class AngryPig : MonoBehaviour
         time = 0;
         playerBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
     }
+
+    //sets the virabels so the enemy cant move
     private void playerLeftZone()
     {
         angry = false;

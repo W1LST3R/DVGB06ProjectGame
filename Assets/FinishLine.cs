@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class FinishLine : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class FinishLine : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            unlockNextLevel();
             if (nextLevel)
             {
                 SceneController.instance.nextLevel();
@@ -21,6 +24,17 @@ public class FinishLine : MonoBehaviour
                 SceneController.instance.loadScene(levelName);
             }
 
+        }
+    }
+     void unlockNextLevel()
+    {
+       //unlocks levels if it the highest level made, necessary for the main menu
+       //so levels will be locked until the level before it has been made
+        if(SceneManager.GetActiveScene().buildIndex >= PlayerPrefs.GetInt("ReachedIndex"))
+        {
+            PlayerPrefs.SetInt("ReachedIndex", SceneManager.GetActiveScene().buildIndex + 1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnclockedLevel",1) + 1);
+            PlayerPrefs.Save();
         }
     }
 }

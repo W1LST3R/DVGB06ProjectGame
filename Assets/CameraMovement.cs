@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject target;
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+ 
     void Update()
     {
+        //folows the players x movement but the camera stays on the same y position
         transform.position = new Vector3(target.transform.position.x, transform.position.y, -10);
     }
 }

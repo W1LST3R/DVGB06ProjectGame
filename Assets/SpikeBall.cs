@@ -6,6 +6,8 @@ using UnityEngine;
 public class SpikeBall : MonoBehaviour
 {
     public Rigidbody2D rb;
+
+    //Makes the object swing on the first frame
     void Start()
     {
        startSwing();

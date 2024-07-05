@@ -7,18 +7,27 @@ public class Timer : MonoBehaviour
 {
     [SerializeField] Text timerText;
     private float elapsedTime;
-    // Start is called before the first frame update
-    void Start()
+    public static Timer timer;
+    private void Awake()
     {
-        
+        if (timer == null)
+        {
+            timer = this;
+        }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        //Counts the time up each frame and formats it to 00:00
         elapsedTime += Time.deltaTime;
         int minutes = Mathf.FloorToInt(elapsedTime / 60);
         int seconds = Mathf.FloorToInt(elapsedTime % 60);
         timerText.text = string.Format("{0:00}:{1:00}",minutes,seconds);
+    }
+
+    //Returns the current time in total seconds
+    public float getFinalTime()
+    {
+        return elapsedTime;
     }
 }

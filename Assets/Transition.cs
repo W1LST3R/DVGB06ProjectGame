@@ -13,8 +13,9 @@ public class Transition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Gives the data to variabels
         nextSceneName = StaticData.nextScene;
-        sceneName.text = nextSceneName;
+        if (!nextSceneName.Equals("MainMenu")) sceneName.text = nextSceneName;
         timeIsCounting = true;
         remainingTime = countDownTime;
         Debug.Log(nextSceneName);
@@ -22,6 +23,7 @@ public class Transition : MonoBehaviour
 
     void Update()
     {
+        //Counts down before going to the next scene
         if (timeIsCounting)
         {
             remainingTime -= Time.deltaTime;

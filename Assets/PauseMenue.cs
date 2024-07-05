@@ -33,11 +33,20 @@ public class PauseMenue : MonoBehaviour
     }
 
     //Quits the game
-    public void quit()
+    public void home()
     {
-        Application.Quit();
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        SceneController.instance.loadHomeScene();
     }
-
+    //Restars the game
+    public void restart()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        Cursor.visible = false;
+        SceneController.instance.restart();
+    }
     //Resumes the game
     public void resume()
     {

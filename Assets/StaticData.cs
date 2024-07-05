@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class StaticData : MonoBehaviour
 {
+    //Refrrnce to the next scene
     public static string nextScene;
 }
