@@ -10,11 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2224410772915650216}
   - component: {fileID: 216537411089087408}
-  - component: {fileID: 2861830580783525024}
   - component: {fileID: 3433642414774571114}
   m_Layer: 0
   m_Name: Spike
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 6042244428088746562}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.0796432, y: -0.264, z: 0.015355437}
-  m_LocalScale: {x: 7, y: 7, z: 1}
+  m_LocalPosition: {x: 2.0796432, y: 1.8, z: 0.015355437}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,18 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2861830580783525024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6042244428088746562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9429075ee8a32844482b74364ee7d926, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!68 &3433642414774571114
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -133,34 +120,20 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.08043827, y: -0.07940047}
-  - {x: -0.08018338, y: -0.059707835}
-  - {x: -0.07027716, y: -0.05979908}
-  - {x: -0.07053657, y: -0.039868854}
-  - {x: -0.06077094, y: -0.039494436}
-  - {x: -0.060949683, y: -0.01918594}
-  - {x: -0.050120305, y: -0.019230388}
-  - {x: -0.050833106, y: -0.010428042}
-  - {x: -0.03997539, y: -0.010449637}
-  - {x: -0.040217347, y: -0.01926111}
-  - {x: -0.029547095, y: -0.019639514}
-  - {x: -0.029297505, y: -0.038999546}
-  - {x: -0.019931879, y: -0.039215315}
-  - {x: -0.01928665, y: -0.05956567}
-  - {x: 0.00962113, y: -0.059768535}
-  - {x: 0.0093573695, y: -0.03986933}
-  - {x: 0.01981727, y: -0.03984215}
-  - {x: 0.019618906, y: -0.020069212}
-  - {x: 0.029311508, y: -0.019484304}
-  - {x: 0.02963848, y: -0.010385128}
-  - {x: 0.039101113, y: -0.010394083}
-  - {x: 0.040189933, y: -0.019857973}
-  - {x: 0.049810603, y: -0.019990502}
-  - {x: 0.050031856, y: -0.03946589}
-  - {x: 0.060128815, y: -0.039875053}
-  - {x: 0.059988216, y: -0.05963478}
-  - {x: 0.070148386, y: -0.060008246}
-  - {x: 0.07034976, y: -0.079839155}
+  - {x: -0.49761546, y: -0.4980862}
+  - {x: -0.4999538, y: -0.3768914}
+  - {x: -0.38978752, y: -0.1373708}
+  - {x: -0.3131208, y: -0.05719654}
+  - {x: -0.24315707, y: -0.061807826}
+  - {x: -0.18145488, y: -0.1216168}
+  - {x: -0.06072516, y: -0.37354314}
+  - {x: -0.0020943526, y: -0.3691561}
+  - {x: 0.1257754, y: -0.12310845}
+  - {x: 0.18408468, y: -0.059555113}
+  - {x: 0.24663374, y: -0.05581177}
+  - {x: 0.31411245, y: -0.12488398}
+  - {x: 0.44341657, y: -0.37187}
+  - {x: 0.44518813, y: -0.49570304}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

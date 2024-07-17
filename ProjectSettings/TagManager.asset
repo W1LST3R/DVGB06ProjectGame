@@ -13,6 +13,9 @@ TagManager:
   - Wall
   - Score
   - Audio
+  - Trap
+  - EnemyT
+  - Abyss
   layers:
   - Default
   - TransparentFX
