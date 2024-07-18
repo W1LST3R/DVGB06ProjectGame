@@ -7,7 +7,6 @@ TagManager:
   - Floor
   - EnemyAP
   - Start
-  - SpikeBall
   - HeadAP
   - Head
   - Wall
@@ -16,6 +15,13 @@ TagManager:
   - Trap
   - EnemyT
   - Abyss
+  - AngryPigText
+  - TrunkText
+  - TrapText
+  - MovementText
+  - DubbelJumpText
+  - WallJumpText
+  - EndText
   layers:
   - Default
   - TransparentFX

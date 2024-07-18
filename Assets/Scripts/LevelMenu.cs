@@ -62,6 +62,10 @@ public class LevelMenu : MonoBehaviour
         string levelName = "World 1-" + levelId;
          SceneController.instance.loadScene(levelName);
     }
+    public void loadLevel(string levelName)
+    {
+        SceneController.instance.loadScene(levelName);
+    }
 
     //Adds all buttons to the array
     void buttonsToArray()

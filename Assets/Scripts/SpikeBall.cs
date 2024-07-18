@@ -28,7 +28,6 @@ public class SpikeBall : MonoBehaviour
 
     IEnumerator swingToAngle(float angle)
     {
-        Debug.Log(angle);
         Quaternion startRotation = transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle)) * startRotation;
         float elapsedTime = 0f;
