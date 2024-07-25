@@ -50,7 +50,7 @@ public class SceneController : MonoBehaviour
     IEnumerator startTransition()
     {
         transition.SetActive(false);
-        if (!SceneManager.GetActiveScene().name.Equals("MainMenu")) 
+        if (!SceneManager.GetActiveScene().name.Equals("MainMenu") && !SceneManager.GetActiveScene().name.Equals("Tutorial"))
         {
             //Get the stars for the level and plays the correct animation
             scoreBanner.SetActive(true);

@@ -125,7 +125,7 @@ public class PlayerCharacter : MonoBehaviour
 
         
         GameObject collisionObject = collision.gameObject;
-
+        playerBody.velocity = new Vector2(playerBody.velocity.x, 0);
         switch (collisionObject.tag)
         {
             case "Head":

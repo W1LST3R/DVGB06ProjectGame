@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager audio;
     [Header ("--------Audio Source--------")]
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource SFXEfects;
@@ -16,7 +17,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip wallJump;
     public AudioClip finish;
 
-
+    private void Awake()
+    {
+        if (audio == null)
+        {
+            audio = this;
+        }
+    }
     private void Start()
     {
         musicSource.clip = background;

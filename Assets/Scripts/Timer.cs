@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
     [SerializeField] Text timerText;
     private float elapsedTime;
     public static Timer timer;
+    private bool timeStop = false;
     private void Awake()
     {
         if (timer == null)
@@ -18,16 +19,23 @@ public class Timer : MonoBehaviour
     
     void Update()
     {
-        //Counts the time up each frame and formats it to 00:00
-        elapsedTime += Time.deltaTime;
-        int minutes = Mathf.FloorToInt(elapsedTime / 60);
-        int seconds = Mathf.FloorToInt(elapsedTime % 60);
-        timerText.text = string.Format("{0:00}:{1:00}",minutes,seconds);
+        if (!timeStop)
+        {
+            //Counts the time up each frame and formats it to 00:00
+            elapsedTime += Time.deltaTime;
+            int minutes = Mathf.FloorToInt(elapsedTime / 60);
+            int seconds = Mathf.FloorToInt(elapsedTime % 60);
+            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        }
     }
 
     //Returns the current time in total seconds
     public float getFinalTime()
     {
         return elapsedTime;
+    }
+    public void stopTime()
+    {
+        timeStop = true;
     }
 }

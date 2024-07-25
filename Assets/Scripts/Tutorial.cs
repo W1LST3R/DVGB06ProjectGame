@@ -1,27 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
     private GameObject playerBody;
-    private Canvas movementText;
-    private Canvas dubbelJumpText;
-    private Canvas wallJumpText;
-    private Canvas angryPigText;
-    private Canvas trunkText;
-    private Canvas trapText;
-    private Canvas endText;
+    private Text movementText;
+    private Text dubbelJumpText;
+    private Text wallJumpText;
+    private Text angryPigText;
+    private Text trunkText;
+    private Text trapText;
+    private Text endText;
     private void Start()
     {
         playerBody = GameObject.FindGameObjectWithTag("Player");
-        movementText = GameObject.FindGameObjectWithTag("MovementText").GetComponentInChildren<Canvas>();
-        dubbelJumpText = GameObject.FindGameObjectWithTag("DubbelJumpText").GetComponentInChildren<Canvas>();
-        wallJumpText = GameObject.FindGameObjectWithTag("WallJumpText").GetComponentInChildren<Canvas>();
-        angryPigText = GameObject.FindGameObjectWithTag("AngryPigText").GetComponentInChildren<Canvas>();
-        trunkText = GameObject.FindGameObjectWithTag("TrunkText").GetComponentInChildren<Canvas>();
-        trapText = GameObject.FindGameObjectWithTag("TrapText").GetComponentInChildren<Canvas>();
-        endText = GameObject.FindGameObjectWithTag("EndText").GetComponentInChildren<Canvas>();
+        movementText = GameObject.FindGameObjectWithTag("MovementText").GetComponentInChildren<Text>();
+        dubbelJumpText = GameObject.FindGameObjectWithTag("DubbelJumpText").GetComponentInChildren<Text>();
+        wallJumpText = GameObject.FindGameObjectWithTag("WallJumpText").GetComponentInChildren<Text>();
+        angryPigText = GameObject.FindGameObjectWithTag("AngryPigText").GetComponentInChildren<Text>();
+        trunkText = GameObject.FindGameObjectWithTag("TrunkText").GetComponentInChildren<Text>();
+        trapText = GameObject.FindGameObjectWithTag("TrapText").GetComponentInChildren<Text>();
+        endText = GameObject.FindGameObjectWithTag("EndText").GetComponentInChildren<Text>();
     }
     void Update()
     {
