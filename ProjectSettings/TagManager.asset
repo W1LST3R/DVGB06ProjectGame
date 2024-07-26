@@ -23,6 +23,7 @@ TagManager:
   - WallJumpText
   - EndText
   - Stars
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

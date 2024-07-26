@@ -34,6 +34,7 @@ public class LevelMenu : MonoBehaviour
             }
         }
         int unclockedLevels = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        Debug.Log(unclockedLevels);
         //Loops threw all unlocked levels
         for (int i = 0; i < unclockedLevels; i++)
         {

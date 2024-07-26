@@ -19,9 +19,17 @@ public class StarScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        getTimesForStage();
-        imageArr = GameObject.FindGameObjectWithTag("Stars").GetComponentsInChildren<Image>();
-        changeTimeText(threeStars);
+        if (SceneManager.GetActiveScene().name.Equals("Tutorial"))
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            getTimesForStage();
+            imageArr = GameObject.FindGameObjectWithTag("Stars").GetComponentsInChildren<Image>();
+            changeTimeText(threeStars);
+        }
+        
     }
 
     // Update is called once per frame

@@ -22,7 +22,7 @@ public class AngryPig : MonoBehaviour
     public Rigidbody2D head;
     public Animator animator;
     public float movementDirection;
-    AudioManager audioManager;
+    private AudioManager audioManager;
     private float headDiff;
 
     private void Awake()
@@ -157,5 +157,19 @@ public class AngryPig : MonoBehaviour
         speed = 0;
         playerBody = null;
         movementDirection = 0;
+    }
+
+    public void die()
+    {
+        StartCoroutine(playDeath());
+    }
+
+    IEnumerator playDeath()
+    {
+        gameObject.GetComponent<EdgeCollider2D>().enabled = false;
+        audioManager.playSFX(audioManager.enemyDeath);
+        animator.SetTrigger("IsDead");
+        yield return new WaitForSeconds(0.4f);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 }

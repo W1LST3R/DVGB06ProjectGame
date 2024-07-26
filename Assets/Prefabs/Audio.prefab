@@ -352,6 +352,7 @@ MonoBehaviour:
   background: {fileID: 8300000, guid: 51a4f1157b7ff1449b5e5cf064d584c7, type: 3}
   enemyDeath: {fileID: 8300000, guid: 7a39ba789208642ea9fda609aea157b6, type: 3}
   death: {fileID: 8300000, guid: 5edbf413725bb496dbcfbffd6e219f59, type: 3}
+  woodShoot: {fileID: 8300000, guid: e532fae4addf9c446abf4321780a2d4c, type: 3}
   UI: {fileID: 8300000, guid: 0d6b319fdfd26764c8aebbd9b77fdbe4, type: 3}
   wallJump: {fileID: 8300000, guid: 4047aaaa19814be44ae0f40e9b70e1fd, type: 3}
   finish: {fileID: 8300000, guid: ce9ab71ae50e88945b8501047aa1e79f, type: 3}

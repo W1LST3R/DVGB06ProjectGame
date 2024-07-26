@@ -11,7 +11,12 @@ public class Trunk : MonoBehaviour
     private bool playerInSight = false;
     public Animator animator;
     public bool right = false;
-    // Update is called once per frame
+    private AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
     void Update()
     {
         if (playerInSight)
@@ -23,6 +28,7 @@ public class Trunk : MonoBehaviour
             else
             {
                 timer = 0;
+                audioManager.playSFX(audioManager.woodShoot);
                 shootWoodBullet();
             }
         }
@@ -33,7 +39,6 @@ public class Trunk : MonoBehaviour
     {
         
         GameObject bullet = Instantiate(woodBullet, shootPosition.position, shootPosition.rotation);
-        Debug.Log("jag Skjuter");
         if (right) bullet.GetComponent<WoodBullet>().rightShoot(); 
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -65,5 +70,19 @@ public class Trunk : MonoBehaviour
     public void playerLeftZone()
     {
         playerInSight = false;
+    }
+
+    public void die()
+    {
+        StartCoroutine(playDeath());
+    }
+
+    IEnumerator playDeath()
+    {
+        gameObject.GetComponent<EdgeCollider2D>().enabled = false;
+        audioManager.playSFX(audioManager.enemyDeath);
+        animator.SetTrigger("IsDead");
+        yield return new WaitForSeconds(0.4f);
+        Destroy(gameObject.transform.parent.gameObject);
     }
 }

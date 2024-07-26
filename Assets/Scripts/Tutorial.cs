@@ -71,6 +71,10 @@ public class Tutorial : MonoBehaviour
             trapText.enabled = true;
             endText.enabled = false;
         }
+        else if (playerBody.transform.position.x > 73.05){
+            trapText.enabled = false;
+            endText.enabled = true;
+        }
 
     }
 }

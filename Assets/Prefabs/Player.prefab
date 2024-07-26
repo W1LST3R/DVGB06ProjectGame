@@ -148,11 +148,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  jumpPower: 350
+  jumpPower: 8.2
   downWardDrag: 10
   playerBody: {fileID: 8408319040771835213}
   animator: {fileID: 6125511684531452423}
-  wallJumpPower: 2
+  wallJumpPower: 1.5
 --- !u!95 &6125511684531452423
 Animator:
   serializedVersion: 5

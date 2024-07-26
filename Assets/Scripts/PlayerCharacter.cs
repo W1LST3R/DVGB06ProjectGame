@@ -24,11 +24,13 @@ public class PlayerCharacter : MonoBehaviour
     public float wallJumpPower;
     private bool touchingWall = false;
     private bool hasWallJumped = true;
+    private GameObject spawnPoint;
 
     private void Start()
     {
         //Sets the virabels for the player
-        transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        spawnPoint = GameObject.FindGameObjectWithTag("Start");
+        transform.position = spawnPoint.transform.position;
         playerCanMove = true;
         goingLeft = false;
         jumpCounter = 0;
@@ -82,11 +84,11 @@ public class PlayerCharacter : MonoBehaviour
             {
                 if (!hasWallJumped)
                 {
-                    playerBody.AddForce(new Vector2(playerBody.velocity.x, jumpPower * wallJumpPower));
+                    playerBody.velocity = new Vector2(playerBody.velocity.x, jumpPower * wallJumpPower);
                     //playerBody.velocity = new Vector2((move*-1) * speed, playerBody.velocity.y);
                     hasWallJumped = true;
                 }
-                else playerBody.AddForce(new Vector2(playerBody.velocity.x, jumpPower));
+                else playerBody.velocity = new Vector2(playerBody.velocity.x, jumpPower);
 
                 jumpCounter++;
             }
@@ -112,13 +114,16 @@ public class PlayerCharacter : MonoBehaviour
         jumpCounter = 0;
     }
     private void OnTriggerEnter2D(Collider2D collision)
-    { 
-        if (collision.gameObject.CompareTag("Trap"))
+    {
+        GameObject collisionObject = collision.gameObject;
+
+        if (collisionObject.tag.Equals("SpawnPoint"))
         {
-           // bellowStage = true;
-            StartCoroutine(playerDied());
+            audioManager.playSFX(audioManager.finish);
+            spawnPoint = collisionObject;
+            spawnPoint.GetComponent<CheckPoint>().checkPointMade();
+            spawnPoint.GetComponent<BoxCollider2D>().enabled = false;
         }
-           
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -131,9 +136,21 @@ public class PlayerCharacter : MonoBehaviour
             case "Head":
                 if (!enemyDead)
                 {
+                    enemyDead = true;
                     jumpCounterReset();
                     GameObject parent = collisionObject.transform.parent.gameObject;
-                    StartCoroutine(killEnemy(parent));
+                    Transform[] childTransforms = parent.GetComponentsInChildren<Transform>();
+                    foreach (Transform childTransform in childTransforms)
+                    {
+                        Debug.Log(childTransform.tag);
+                    }
+                    GameObject body = childTransforms[1].gameObject;                    if (body.tag.Equals("EnemyAP")){
+                        body.GetComponent<AngryPig>().die();
+                    }
+                    else{
+                        body.GetComponent<Trunk>().die();
+                    }
+                    enemyDead = false;
                 }
                 break;
             case "EnemyAP":
@@ -155,11 +172,11 @@ public class PlayerCharacter : MonoBehaviour
             case "EnemyT":
                 if (!playerDead && collisionObject != null)
                 {
-                    GameObject parent = collisionObject.transform.parent.gameObject;
-                    PolygonCollider2D enemyHead = parent.GetComponentInChildren<PolygonCollider2D>();
-                    enemyHead.enabled = false;
-                    collisionObject.GetComponent<Trunk>().playerLeftZone();
-                    StartCoroutine(playerDied(enemyHead));
+                        GameObject parent = collisionObject.transform.parent.gameObject;
+                        PolygonCollider2D enemyHead = parent.GetComponentInChildren<PolygonCollider2D>();
+                        enemyHead.enabled = false;
+                        collisionObject.GetComponent<Trunk>().playerLeftZone();
+                        StartCoroutine(playerDied(enemyHead));
                 }
                 break;
             case "Wall":
@@ -233,7 +250,7 @@ public class PlayerCharacter : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
             animator.SetTrigger("IsAlive");
         }
-        playerBody.transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        playerBody.transform.position = spawnPoint.transform.position;
         playerCanMove = true;
         bellowStage = false;
         playerDead = false;
@@ -252,22 +269,11 @@ public class PlayerCharacter : MonoBehaviour
         animator.SetTrigger("IsAlive");
         gameObject.GetComponent<BoxCollider2D>().enabled = true;
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
-        playerBody.transform.position = GameObject.FindGameObjectWithTag("Start").transform.position;
+        playerBody.transform.position = spawnPoint.transform.position;
         jumpCounterReset();
         enemyHead.enabled = true;
         playerCanMove = true;
         playerDead = false;
-    }
-
-    IEnumerator killEnemy(GameObject parent)
-    {
-        enemyDead = true;
-        parent.GetComponentInChildren<EdgeCollider2D>().enabled = false;
-        audioManager.playSFX(audioManager.enemyDeath);
-        parent.GetComponentInChildren<Animator>().SetTrigger("IsDead");
-        yield return new WaitForSeconds(0.4f);
-        Destroy(parent);
-        enemyDead = false;
     }
 }
 
