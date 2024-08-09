@@ -33,10 +33,10 @@ public class LevelMenu : MonoBehaviour
                 }
             }
         }
-        int unclockedLevels = PlayerPrefs.GetInt("UnlockedLevel", 1);
-        Debug.Log(unclockedLevels);
+        int unlockedLevels = PlayerPrefs.GetInt("UnlockedLevel", 1);
+        Debug.Log(unlockedLevels);
         //Loops threw all unlocked levels
-        for (int i = 0; i < unclockedLevels; i++)
+        for (int i = 0; i < unlockedLevels; i++)
         {
             //Enable button
             buttons[i].enabled = true;
@@ -63,6 +63,7 @@ public class LevelMenu : MonoBehaviour
         string levelName = "World 1-" + levelId;
          SceneController.instance.loadScene(levelName);
     }
+    //Loads the selected level
     public void loadLevel(string levelName)
     {
         SceneController.instance.loadScene(levelName);

@@ -6,11 +6,14 @@ public class CheckPoint : MonoBehaviour
 {
     public Animator animator;
 
+    //If the player makes the checkpoint
     public void checkPointMade()
     {
         StartCoroutine(playAnimation());
     }
 
+
+    //Plays animation for checkpoint
     IEnumerator playAnimation()
     {
         animator.SetTrigger("CheckPointHit");

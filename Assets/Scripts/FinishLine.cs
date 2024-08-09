@@ -16,18 +16,21 @@ public class FinishLine : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("EndHit");
-            unlockNextLevel();
+            //if the scene name is not tutorial or World 1-8 then it will check to unlock a new stage
+            if(!SceneManager.GetActiveScene().name.Equals("Tutorial") && !SceneManager.GetActiveScene().name.Equals("World 1-8")) unlockNextLevel();
             if (nextLevel)
             {
                 SceneController.instance.nextLevel();
             }
             else
             {
+                if(levelName.Equals("MainMenu")) Cursor.visible = true;
                 SceneController.instance.loadScene(levelName);
             }
 
         }
     }
+
      void unlockNextLevel()
     {
         //unlocks levels if it the highest level made, necessary for the main menu
@@ -37,10 +40,8 @@ public class FinishLine : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex-2 >= PlayerPrefs.GetInt("ReachedIndex"))
         {
             PlayerPrefs.SetInt("ReachedIndex", PlayerPrefs.GetInt("ReachedIndex")+1);
-            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnclockedLevel",1)+1);
+            PlayerPrefs.SetInt("UnlockedLevel", PlayerPrefs.GetInt("UnlockedLevel", 1)+1);
             PlayerPrefs.Save();
-            Debug.Log(PlayerPrefs.GetInt("UnclockedLevel"));
-
         }
     }
 }

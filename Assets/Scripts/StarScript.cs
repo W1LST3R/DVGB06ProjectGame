@@ -35,12 +35,14 @@ public class StarScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //If the time is over the three star limit then it will change and display two star limit
         if(threeStars < Timer.timer.getFinalTime() && !twoChange)
         {
             twoChange = true;
             imageArr[2].sprite = emptyStar;
             changeTimeText(twoStars);
         }
+        //Changes to one star limit
         else if (twoStars < Timer.timer.getFinalTime() && !oneChange)
         {
             oneChange = true;
@@ -49,12 +51,15 @@ public class StarScript : MonoBehaviour
         }
     }
 
+    //Gets the diffrent times for three and two stars, all worse then two stars i one star
     private void getTimesForStage()
     {
        float[] times = WorldScript.world.getTimes(SceneManager.GetActiveScene().name);
        threeStars = times[0];
        twoStars = times[1];
     }
+
+    //Changes the text
     public void changeTimeText(float time)
     {
         int minutes = Mathf.FloorToInt(time / 60);

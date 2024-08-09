@@ -18,7 +18,6 @@ public class Transition : MonoBehaviour
         if (!nextSceneName.Equals("MainMenu")) sceneName.text = nextSceneName;
         timeIsCounting = true;
         remainingTime = countDownTime;
-        Debug.Log(nextSceneName);
     }
 
     void Update()

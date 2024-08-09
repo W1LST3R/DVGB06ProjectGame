@@ -15,6 +15,7 @@ public class Tutorial : MonoBehaviour
     private Text endText;
     private void Start()
     {
+        //Gets all the text objects
         playerBody = GameObject.FindGameObjectWithTag("Player");
         movementText = GameObject.FindGameObjectWithTag("MovementText").GetComponentInChildren<Text>();
         dubbelJumpText = GameObject.FindGameObjectWithTag("DubbelJumpText").GetComponentInChildren<Text>();
@@ -26,6 +27,7 @@ public class Tutorial : MonoBehaviour
     }
     void Update()
     {
+        //Changes the tutorial text dependent where the player is
         if (playerBody.transform.position.x < -2.65)
         {
             movementText.enabled = true;

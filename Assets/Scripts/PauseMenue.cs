@@ -5,6 +5,7 @@ using UnityEngine;
 public class PauseMenue : MonoBehaviour
 {
     public GameObject pauseMenu;
+    private GameObject optionsPanal;
     // Makes the cursor invisible
     void Start()
     {
@@ -14,6 +15,7 @@ public class PauseMenue : MonoBehaviour
     //If the esc key is enterd the time stops and the pause menu is shown
     void Update()
     {
+        if(optionsPanal == null) optionsPanal = GameObject.FindGameObjectWithTag("OptionsPanal");
         if (Input.GetKeyUp(KeyCode.Escape))
         {
 
@@ -27,6 +29,7 @@ public class PauseMenue : MonoBehaviour
             {
                 Time.timeScale = 1f;
                 pauseMenu.SetActive(false);
+                optionsPanal.SetActive(false);
                 Cursor.visible = false;
             }
         }

@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: -6367560908665664636, guid: cd947491a13509945aa1b644f9db3ef2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756c619a5a57abd48b473dfe0166297c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpPower: 8.2
+  speed: 5.2
+  jumpPower: 9
   downWardDrag: 10
   playerBody: {fileID: 8408319040771835213}
   animator: {fileID: 6125511684531452423}
@@ -283,8 +283,8 @@ PolygonCollider2D:
     - - {x: -0.045133233, y: -0.29042143}
       - {x: -0.12750745, y: -0.28751022}
       - {x: -0.03934431, y: -0.403507}
-      - {x: -0.05657649, y: -0.50568783}
-      - {x: 0.082172155, y: -0.50284386}
+      - {x: -0.061602354, y: -0.4973117}
+      - {x: 0.08552241, y: -0.49781895}
       - {x: 0.084881365, y: -0.41197157}
       - {x: 0.11616516, y: -0.31310588}
       - {x: 0.05376625, y: -0.2932654}

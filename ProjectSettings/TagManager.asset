@@ -24,6 +24,8 @@ TagManager:
   - EndText
   - Stars
   - SpawnPoint
+  - OptionsPanal
+  - NotFloor
   layers:
   - Default
   - TransparentFX

@@ -26,7 +26,7 @@ public class World_1 : MonoBehaviour
 
     public float[] getLevelTimes(string levelName)
     {
-        //calls the function for the current level and checks how many stars the player got
+        //calls the function for the current level and retuns the times for the level
         float[] times = new float[2];
         switch (levelName)
         {

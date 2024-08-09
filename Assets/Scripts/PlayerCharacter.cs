@@ -18,7 +18,6 @@ public class PlayerCharacter : MonoBehaviour
     private bool playerCanMove;
     AudioManager audioManager;
     private bool bellowStage = false;
-    private bool playerDead = false;
     private bool enemyDead = false;
     private bool wallSliding = false;
     public float wallJumpPower;
@@ -30,7 +29,7 @@ public class PlayerCharacter : MonoBehaviour
     {
         //Sets the virabels for the player
         spawnPoint = GameObject.FindGameObjectWithTag("Start");
-        transform.position = spawnPoint.transform.position;
+        transform.position = new Vector3(spawnPoint.transform.position.x, spawnPoint.transform.position.y-0.98f, spawnPoint.transform.position.z);
         playerCanMove = true;
         goingLeft = false;
         jumpCounter = 0;
@@ -52,6 +51,7 @@ public class PlayerCharacter : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        //Makes the player slowly glide down the wall
         if (wallSliding)
         {
             playerBody.velocity = new Vector2(playerBody.velocity.x, Mathf.Clamp(playerBody.velocity.y, -downWardDrag, float.MaxValue));
@@ -80,7 +80,7 @@ public class PlayerCharacter : MonoBehaviour
                 playerBody.velocity = new Vector2(playerBody.velocity.x, Mathf.Clamp(playerBody.velocity.y, -downWardDrag, float.MaxValue));
             }
             //if the player press space it will jump up too two times
-            if (Input.GetButtonDown("Jump") && jumpCounter < 2)
+            if (Input.GetButtonDown("Jump") && jumpCounter < 2 && !touchingWall)
             {
                 if (!hasWallJumped)
                 {
@@ -100,7 +100,7 @@ public class PlayerCharacter : MonoBehaviour
             {
                 animator.SetBool("IsDubbelJumping", false);
             }
-        }
+        }else playerBody.velocity = Vector2.zero;
         
         //Sets the players animation
         animator.SetFloat("Horizontal", playerBody.velocity.x);
@@ -127,56 +127,34 @@ public class PlayerCharacter : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        //Chooses right dependent on what the player hit
         
         GameObject collisionObject = collision.gameObject;
-        playerBody.velocity = new Vector2(playerBody.velocity.x, 0);
         switch (collisionObject.tag)
         {
-            case "Head":
-                if (!enemyDead)
-                {
-                    enemyDead = true;
-                    jumpCounterReset();
-                    GameObject parent = collisionObject.transform.parent.gameObject;
-                    Transform[] childTransforms = parent.GetComponentsInChildren<Transform>();
-                    foreach (Transform childTransform in childTransforms)
-                    {
-                        Debug.Log(childTransform.tag);
-                    }
-                    GameObject body = childTransforms[1].gameObject;                    if (body.tag.Equals("EnemyAP")){
-                        body.GetComponent<AngryPig>().die();
-                    }
-                    else{
-                        body.GetComponent<Trunk>().die();
-                    }
-                    enemyDead = false;
-                }
-                break;
             case "EnemyAP":
-                if (!playerDead && collisionObject != null)
+                if(playerBody.position.y > collisionObject.GetComponent<Rigidbody2D>().position.y + 0.6)
                 {
-                    GameObject parent = collisionObject.transform.parent.gameObject;
-                    PolygonCollider2D enemyHead = parent.GetComponentInChildren<PolygonCollider2D>();
-                    enemyHead.enabled = false;
-                    collisionObject.GetComponent<AngryPig>().playerLeftZone();
-                    StartCoroutine(playerDied(enemyHead));
-                } 
+                    jumpCounterReset();
+                    collisionObject.GetComponent<AngryPig>().die();
+                }
+                else
+                {
+                    StartCoroutine(playerDied(collisionObject));
+                }
                 break;
             case "Trap":
-                if (!playerDead)
-                {
-                    StartCoroutine(playerDied());
-                }
+                StartCoroutine(playerDied());
                 break;
             case "EnemyT":
-                if (!playerDead && collisionObject != null)
+                if (playerBody.position.y > collisionObject.GetComponent<Rigidbody2D>().position.y + 0.6)
                 {
-                        GameObject parent = collisionObject.transform.parent.gameObject;
-                        PolygonCollider2D enemyHead = parent.GetComponentInChildren<PolygonCollider2D>();
-                        enemyHead.enabled = false;
-                        collisionObject.GetComponent<Trunk>().playerLeftZone();
-                        StartCoroutine(playerDied(enemyHead));
+                    jumpCounterReset();
+                    collisionObject.GetComponent<Trunk>().die();
+                }
+                else
+                {
+                    StartCoroutine(playerDied(collisionObject));
                 }
                 break;
             case "Wall":
@@ -188,15 +166,15 @@ public class PlayerCharacter : MonoBehaviour
                 player = null;
                 break;
             case "Abyss":
-                if (!playerDead)
-                {
-                    StartCoroutine(playerDied());
-                }
+                StartCoroutine(playerDied());
                 break;
             case "Start":
                 jumpCounterReset();
                 playerCanMove = true;
 
+                break;
+            case "NotFloor":
+                audioManager.playSFX(audioManager.wallJump);
                 break;
             default:
                 hasWallJumped = true;
@@ -239,10 +217,11 @@ public class PlayerCharacter : MonoBehaviour
     //sets player position to start position
 
     
+    //Kills the player
     IEnumerator playerDied()
     {
-        playerDead = true;
         playerCanMove = false;
+        jumpCounterReset();
         audioManager.playSFX(audioManager.death);
         if (!bellowStage)
         {
@@ -253,27 +232,51 @@ public class PlayerCharacter : MonoBehaviour
         playerBody.transform.position = spawnPoint.transform.position;
         playerCanMove = true;
         bellowStage = false;
-        playerDead = false;
-
     }
 
-    IEnumerator playerDied(PolygonCollider2D enemyHead)
+    //Kills the player
+    IEnumerator playerDied(GameObject enemy)
     {
-        playerDead = true;
-        gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        gameObject.GetComponent<CircleCollider2D>().enabled = false;
-        playerCanMove = false;
-        audioManager.playSFX(audioManager.death);
-        animator.SetTrigger("IsDead");
-        yield return new WaitForSeconds(0.6f);
-        animator.SetTrigger("IsAlive");
-        gameObject.GetComponent<BoxCollider2D>().enabled = true;
-        gameObject.GetComponent<CircleCollider2D>().enabled = true;
-        playerBody.transform.position = spawnPoint.transform.position;
-        jumpCounterReset();
-        enemyHead.enabled = true;
-        playerCanMove = true;
-        playerDead = false;
+        if (enemy.tag.Equals("EnemyAP"))
+        {
+            playerCanMove = false;
+            AngryPig angryPig =enemy.GetComponent<AngryPig>();
+            GameObject parent = enemy.transform.parent.gameObject;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            audioManager.playSFX(audioManager.death);
+            animator.SetTrigger("IsDead");
+            yield return new WaitForSeconds(0.6f);
+            animator.SetTrigger("IsAlive");
+            angryPig.cantAttack();
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            gameObject.GetComponent<CircleCollider2D>().enabled = true;
+            jumpCounterReset();
+            playerBody.transform.position = spawnPoint.transform.position;
+            angryPig.playerLeftZone();
+            playerCanMove = true;
+            angryPig.canAttack();
+        }
+        else
+        {
+            Trunk trunk =enemy.GetComponent<Trunk>();
+            GameObject parent = enemy.transform.parent.gameObject;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+            playerCanMove = false;
+            audioManager.playSFX(audioManager.death);
+            animator.SetTrigger("IsDead");
+            yield return new WaitForSeconds(0.6f);
+            animator.SetTrigger("IsAlive");
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            gameObject.GetComponent<CircleCollider2D>().enabled = true;
+            jumpCounterReset();
+            playerBody.transform.position = spawnPoint.transform.position;
+            trunk.playerLeftZone();
+            playerCanMove = true;
+        }
+
+        
     }
 }
 

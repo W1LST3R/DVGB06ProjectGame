@@ -12,6 +12,7 @@ public class WoodBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Moves the bullet until it reaches the limit
         if (leftShoot) transform.position = transform.position + (Vector3.left * moveSpeed) * Time.deltaTime;
         else transform.position = transform.position + (Vector3.right * moveSpeed) * Time.deltaTime;
         elapsedTime += Time.deltaTime;
@@ -20,6 +21,7 @@ public class WoodBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    //Switch direction
     public void rightShoot()
     {
         leftShoot = false;
