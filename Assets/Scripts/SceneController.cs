@@ -109,8 +109,9 @@ public class SceneController : MonoBehaviour
 
     //Checks if the stars for the current was a new highscore
     public void checkIfHighestScore(float stars)
-    {   if(Timer.timer.getFinalTime() < PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name+"HighScore",600))
+    {   if(Timer.timer.getFinalTime() < PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name+ "HighScore", 600))
         {
+            Debug.Log(Timer.timer.getFinalTime());
             PlayerPrefs.SetFloat(SceneManager.GetActiveScene().name + "HighScore", Timer.timer.getFinalTime());
         }
         if (stars > PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name))

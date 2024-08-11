@@ -1367,7 +1367,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 586, y: 0}
-  m_SizeDelta: {x: 675, y: 100}
+  m_SizeDelta: {x: 711, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4393712702535593271
 CanvasRenderer:
@@ -1410,7 +1410,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Highscore: 00:00'
+  m_Text: 'High Score: 00:00'
 --- !u!1 &5277869737759651321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,7 +1722,7 @@ Transform:
   m_GameObject: {fileID: 6069346184044636041}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28, y: 447, z: 0}
+  m_LocalPosition: {x: 9, y: 447, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
