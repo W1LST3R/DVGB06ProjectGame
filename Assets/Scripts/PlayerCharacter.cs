@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -166,6 +166,7 @@ public class PlayerCharacter : MonoBehaviour
                 player = null;
                 break;
             case "Abyss":
+                bellowStage = true;
                 StartCoroutine(playerDied());
                 break;
             case "Start":

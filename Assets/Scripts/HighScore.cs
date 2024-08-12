@@ -18,7 +18,6 @@ public class HighScore : MonoBehaviour
         {
             //Gets the best time for the current level and displays it
             float highScore = PlayerPrefs.GetFloat(SceneManager.GetActiveScene().name+ "HighScore",0);
-            Debug.Log(highScore);
             int minutes = Mathf.FloorToInt(highScore / 60);
             int seconds = Mathf.FloorToInt(highScore % 60);
             string time = string.Format("{0:00}:{1:00}", minutes, seconds);

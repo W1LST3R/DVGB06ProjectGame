@@ -34,7 +34,6 @@ public class LevelMenu : MonoBehaviour
             }
         }
         int unlockedLevels = PlayerPrefs.GetInt("UnlockedLevel", 1);
-        Debug.Log(unlockedLevels);
         //Loops threw all unlocked levels
         for (int i = 0; i < unlockedLevels; i++)
         {
